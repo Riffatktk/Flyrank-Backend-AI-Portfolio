@@ -17,23 +17,6 @@ The objective was to set up the required AI tools and accounts that will be used
 
 ---
 
-## Evidence
-
-### 1. Anthropic Course Enrollment
-
-![Anthropic Course Enrollment](Athropic Enrollment.pdf)
-
----
-
-### 2. Claude Project Page
-
-![Claude Project](Claude project.pdf)
-
----
-
-### 3. ChatGPT Account
-
-![ChatGPT Account](Chatgpt Account.pdf)
 
 ---
 
@@ -67,6 +50,5 @@ The original assignment submission is included in this folder.
 
 BS Computer Science Student
 
-University of Engineering & Technology (UET), Taxila
 
 FlyRank AI Internship — July 2026 Cohort
