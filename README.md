@@ -5,7 +5,13 @@ Welcome to my internship portfolio for the **FlyRank AI Internship (July 2026 Co
 Each assignment is organized in its own folder with documentation, source files, and screenshots demonstrating successful completion.
 
 ---
+## AI Fluency Assignments
 
+| Week | Assignment | Status |
+|------|------------|--------|
+| W1-A1 | AI Workflow Audit and Tool Setup | ✅ Completed |
+| W1-A2 | Draw the Path: Portfolio Sitemap + Toolkit | ✅ Completed |
+| W1-A3 | What Are You Proving? | ✅ Completed |
 # About the Internship
 
 The FlyRank AI Internship is a remote learning program focused on developing practical software engineering and AI skills through hands-on projects.
