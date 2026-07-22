@@ -44,5 +44,6 @@ The assignment focused on presenting my backend projects as structured case stud
 ## Author
 
 **Riffat **  
+BS Computer Science Student
+FlyRank AI Internship — July 2026 Cohort
 
-**GitHub:** https://github.com/Riffatktk
