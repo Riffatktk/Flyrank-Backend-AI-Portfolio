@@ -111,7 +111,7 @@ Through this internship, I aim to:
 
 # 👩‍💻 Author
 
-**Riffat Yasmeen**
+**Riffat **
 
 BS Computer Science Student  
 Flyrank Cohort July 2026.
