@@ -1,125 +1,63 @@
-# BE-06 – Your First Background Job
+BE-06: Your First Background Job
 
-## Assignment Overview
+📌 Assignment Overview
+This project demonstrates how to process background tasks using FastAPI, Celery, and Redis. Instead of handling long-running tasks during the request, the API creates a background job that is processed asynchronously by a Celery worker.
 
-This assignment was completed as part of the **Backend Engineering** specialization during the **FlyRank AI Internship (July 2026 Cohort)**.
+🎯 Objectives
+Build a FastAPI application with background job support.
+Use Redis as the message broker.
+Process jobs asynchronously using Celery.
+Check job status through API endpoints.
 
-The goal of this project was to move time-consuming operations outside the main request cycle by using background jobs. Instead of waiting for a long-running AI request to finish, the application immediately accepts the request and processes it asynchronously.
+🛠️ Technologies Used
+Python
+FastAPI
+Celery
+Redis
+Docker & Docker Compose
+Uvicorn
 
----
+📂 Project Structure
+BE-06/
+├── app/
+├── celery_app.py
+├── docker-compose.yml
+├── Dockerfile
+├── requirements.txt
+├── README.md
+└── screenshots/
 
-## Objectives
-
-- Implement asynchronous background task processing.
-- Use Celery for task execution.
-- Configure Redis as the message broker.
-- Build an API to submit background jobs.
-- Track the progress and result of submitted jobs.
-
----
-
-## Technologies Used
-
-- Python
-- FastAPI
-- Celery
-- Redis
-- Docker
-- Docker Compose
-- Git & GitHub
-
----
-
-## Project Structure
-
-This assignment includes:
-
-- `main.py`
-- `celery_app.py`
-- `tasks.py`
-- `alerts.py`
-- `docker-compose.yml`
-- `requirements.txt`
-- `README.md`
-
----
-
-## How to Run
-
-Start the project using Docker Compose:
-
-```bash
+▶️ How to Run
 docker compose up --build
-```
 
-The project requires a `.env` file containing the necessary environment variables.
+Open:
+API: http://localhost:8001
+Swagger Docs:
+ http://localhost:8001/docs
 
-Example:
+📡 API Endpoints
+Create Background Job
+POST /jobs
 
-```text
-GROQ_API_KEY=your_api_key
-REDIS_URL=redis://redis:6379/0
-```
+Check Job Status
+GET /jobs/{job_id}
 
----
+📸 Screenshots
+01_Terminal_Containers_Running.png
+02_API_Home_Page_Port_8001.png
+03_Swagger_API_Documentation.png
+04_Create_Background_Job_POST.png
+05_Job_Status_Success_GET.png
 
-## Testing
-
-Submit a background job:
-
-```bash
-curl -X POST http://localhost:8000/jobs
-```
-
-Check job status:
-
-```bash
-curl http://localhost:8000/jobs/{job_id}
-```
-
----
-
-## Expected Outcome
-
-The application should:
-
-- Accept requests immediately.
-- Process AI tasks in the background.
-- Allow users to check job status.
-- Handle retries for temporary failures.
-- Log permanent failures for monitoring.
-
----
-
-## Screenshots
-
-Screenshots demonstrating the application, worker execution, Redis connection, and successful job processing will be added after completing the assignment.
-
----
-
-## Learning Outcomes
-
-Through this assignment, I learned how to:
-
-- Build asynchronous backend workflows.
-- Process long-running tasks using Celery.
-- Configure Redis as a message broker.
-- Design APIs for background processing.
-- Improve application responsiveness by separating request handling from task execution.
-
----
-
-## Status
-
-🚧 In Progress
-
+✅ Learning Outcomes
+Understood asynchronous background processing.
+Learned how Celery works with Redis.
+Built and tested background job APIs using FastAPI.
+Containerized the application with Docker.
 ---
 
 ## Author
 
-**Riffat **
-
+**Riffat**
 BS Computer Science Student
-
-
 FlyRank AI Internship – July 2026 Cohort
