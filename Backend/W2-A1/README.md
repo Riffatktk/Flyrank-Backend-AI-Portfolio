@@ -60,7 +60,7 @@ The following screenshots were captured while running the application locally an
 
 `uvicorn main:app --reload` starting cleanly, confirming the app loads with no import errors before any endpoint is touched.
 
-![Hello Server](Screenshots/0_hello_server.JPG)
+![Hello Server](Screenshots/0_hello_server.JPG)https://github.com/Riffatktk/Flyrank-Backend-AI-Portfolio/blob/main/Backend/W2-A1/Screenshot/0_hello_server.JPG
 
 ### Stage 1 — Root & Health Check
 
