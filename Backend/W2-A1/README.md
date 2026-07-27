@@ -60,19 +60,19 @@ The following screenshots were captured while running the application locally an
 
 `uvicorn main:app --reload` starting cleanly, confirming the app loads with no import errors before any endpoint is touched.
 
-![Hello Server](Screenshots/0_hello_server.JPG)https://github.com/Riffatktk/Flyrank-Backend-AI-Portfolio/blob/main/Backend/W2-A1/Screenshot/0_hello_server.JPG
+![Hello Server] (Screenshots/0_hello_server.JPG)https://github.com/Riffatktk/Flyrank-Backend-AI-Portfolio/blob/main/Backend/W2-A1/Screenshot/0_hello_server.JPG
 
 ### Stage 1 — Root & Health Check
 
 `GET /` (API info) and `GET /health` both returning `200`, confirming the app is live and reachable before any CRUD logic is exercised.
 
-![Root and Health](Screenshots/1_root_and_health.JPG)
+![Root and Health] (Screenshots/1_root_and_health.JPG)https://github.com/Riffatktk/Flyrank-Backend-AI-Portfolio/blob/main/Backend/W2-A1/Screenshot/1_root_and_health.JPG
 
 ### Stage 2 — Read Endpoints
 
 `GET /tasks` (list all) and `GET /tasks/{id}` (single task), including the `404` case for a non-existent ID, matching the `{"error": "..."}` response shape required by the spec.
 
-![Read Endpoints](Screenshots/2_read_endpoints.JPG)
+![Read Endpoints] (Screenshots/2_read_endpoints.JPG)
 
 ### Stage 3 — Create with Validation
 
