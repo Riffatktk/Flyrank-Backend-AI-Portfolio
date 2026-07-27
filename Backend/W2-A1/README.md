@@ -153,7 +153,7 @@ The assignment requirements have been successfully completed.
 - ✅ Swagger UI works correctly for all endpoints.
 - ✅ All screenshots have been captured and added under the `Screenshots/` folder.
 - ✅ The project is ready to be committed and pushed to GitHub.
-
+-
 # Author
 
 **Riffat **
