@@ -72,29 +72,29 @@ The following screenshots were captured while running the application locally an
 
 `GET /tasks` (list all) and `GET /tasks/{id}` (single task), including the `404` case for a non-existent ID, matching the `{"error": "..."}` response shape required by the spec.
 
-![Read Endpoints] (Screenshots/2_read_endpoints.JPG)
+![Read Endpoints] (Screenshots/2_read_endpoints.JPG)https://github.com/Riffatktk/Flyrank-Backend-AI-Portfolio/blob/main/Backend/W2-A1/Screenshot/2_read_endpoints.JP
 
 ### Stage 3 — Create with Validation
 
 `POST /tasks` tested against both an empty body (`{}`) and an empty-string title (`{"title": ""}`), confirming both correctly return `400` rather than silently accepting invalid data.
 
-![Create with Validation](Screenshots/3_create_with_validation.JPG)
+![Create with Validation] (Screenshots/3_create_with_validation.JPG)https://github.com/Riffatktk/Flyrank-Backend-AI-Portfolio/blob/main/Backend/W2-A1/Screenshot/3_create_with_validation.JPG
 
 ### Stage 4 — Full CRUD Cycle
 
 The complete lifecycle — create → read → update → delete — exercised end-to-end via `curl`, confirming each step returns the correct status code and body in sequence.
 
-![Full CRUD Part 1](Screenshots/4_full_crud_part1.JPG)
-![Full CRUD Part 2](Screenshots/4_full_crud_part2.JPG)
+![Full CRUD Part 1] (Screenshots/4_full_crud_part1.JPG)https://github.com/Riffatktk/Flyrank-Backend-AI-Portfolio/blob/main/Backend/W2-A1/Screenshot/4_full_crud_part1.JPG
+![Full CRUD Part 2] (Screenshots/4_full_crud_part2.JPG)https://github.com/Riffatktk/Flyrank-Backend-AI-Portfolio/blob/main/Backend/W2-A1/Screenshot/4_full_crud_part2.PNG
 
 ### Stage 5 — Swagger UI (Full CRUD via "Try it out")
 
 The complete CRUD workflow was also verified through the interactive Swagger UI (`/docs`), confirming that every endpoint works correctly without using the command line.
 
-![Swagger - Task Created](Screenshots/5_swagger_ui_task_created.JPG)
-![Swagger - Task Get](Screenshots/5_swagger_ui_task_get.JPG)
-![Swagger - Task Put](Screenshots/5_swagger_ui_task_put.JPG)
-![Swagger - Task Deleted](Screenshots/5_swagger_ui_task_deleted.JPG)
+![Swagger - Task Created] (Screenshots/5_swagger_ui_task_created.JPG)https://github.com/Riffatktk/Flyrank-Backend-AI-Portfolio/blob/main/Backend/W2-A1/Screenshot/5_browser_test_port_8001.PNG
+![Swagger - Task Get] (Screenshots/5_swagger_ui_task_get.JPG)https://github.com/Riffatktk/Flyrank-Backend-AI-Portfolio/blob/main/Backend/W2-A1/Screenshot/5_swagger_ui_task_created.PNG
+![Swagger - Task Put] (Screenshots/5_swagger_ui_task_put.JPG)https://github.com/Riffatktk/Flyrank-Backend-AI-Portfolio/blob/main/Backend/W2-A1/Screenshot/5_swagger_ui_task_deleted.PNG
+![Swagger - Task Deleted] (Screenshots/5_swagger_ui_task_deleted.JPG)https://github.com/Riffatktk/Flyrank-Backend-AI-Portfolio/blob/main/Backend/W2-A1/Screenshot/5_swagger_ui_task_put.PNG
 
 ---
 
