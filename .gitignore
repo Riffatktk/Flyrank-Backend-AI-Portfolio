@@ -221,3 +221,4 @@ __pycache__/
 *.pyc
 permanent_failures.log
 .ve
+.vscode/
