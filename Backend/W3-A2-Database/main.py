@@ -15,13 +15,27 @@ from fastapi import FastAPI, Request, Response, status
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, field_validator
-
+from sqlmodel import Session, select
+from database import engine, create_db_and_tables
+from models import Task as DBTask
 app = FastAPI(
     title="Task API",
     version="1.0",
     description="A minimal in-memory to-do list API (CRUD) built with FastAPI.",
 )
+@app.on_event("startup")
+def startup():
+    create_db_and_tables()
 
+    with Session(engine) as session:
+
+        if session.exec(select(DBTask)).first() is None:
+
+            session.add(DBTask(title="Buy milk", done=False))
+            session.add(DBTask(title="Walk the dog", done=True))
+            session.add(DBTask(title="Finish FlyRank assignment", done=False))
+
+            session.commit()
 
 # ---------------------------------------------------------------------------
 # Make FastAPI's default validation errors match the spec:
