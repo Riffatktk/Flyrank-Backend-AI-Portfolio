@@ -1,0 +1,166 @@
+/* ==========================
+   General Styling
+========================== */
+
+body {
+    margin: 0;
+    padding: 40px;
+    background: #F8FAFC;
+    color: #0F172A;
+    font-family: 'Inter', sans-serif;
+}
+
+.container {
+    max-width: 950px;
+    margin: auto;
+}
+
+/* ==========================
+   Headings
+========================== */
+
+h1,
+h2,
+h3 {
+    font-family: 'Space Grotesk', sans-serif;
+}
+
+h1 {
+    text-align: center;
+    font-size: 46px;
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    text-align: center;
+    color: #475569;
+    font-size: 20px;
+    margin-bottom: 35px;
+}
+
+h2 {
+    margin-bottom: 20px;
+    color: #0F172A;
+}
+
+.heading {
+    font-size: 34px;
+}
+
+.body {
+    font-size: 18px;
+    line-height: 1.8;
+}
+
+/* ==========================
+   Logo
+========================== */
+
+.logo-container {
+    text-align: center;
+    margin: 30px 0;
+}
+
+.logo {
+    width: 170px;
+    height: auto;
+    border-radius: 20px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+}
+
+.logo-container p {
+    margin-top: 15px;
+    font-weight: 600;
+    color: #1E293B;
+}
+
+/* ==========================
+   Color Palette
+========================== */
+
+.colors {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    flex-wrap: wrap;
+    margin-top: 25px;
+}
+
+.color {
+    width: 160px;
+    height: 110px;
+    border-radius: 14px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    border: 1px solid #d1d5db;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.blue {
+    background: #0F172A;
+    color: white;
+}
+
+.dark {
+    background: #1E293B;
+    color: white;
+}
+
+.white {
+    background: #F8FAFC;
+    color: black;
+}
+
+.accent {
+    background: #3B82F6;
+    color: white;
+}
+
+small {
+    display: block;
+    margin-top: 8px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+/* ==========================
+   Favicon
+========================== */
+
+img[alt="Favicon"] {
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+}
+
+/* ==========================
+   Style Note
+========================== */
+
+.body strong {
+    color: #0F172A;
+}
+
+/* ==========================
+   Footer
+========================== */
+
+footer {
+    margin-top: 35px;
+    padding: 20px 0;
+    text-align: center;
+    color: #64748B;
+    font-size: 15px;
+}
+
+/* ==========================
+   Horizontal Line
+========================== */
+
+hr {
+    margin: 45px 0;
+    border: none;
+    border-top: 1px solid #CBD5E1;
+}
