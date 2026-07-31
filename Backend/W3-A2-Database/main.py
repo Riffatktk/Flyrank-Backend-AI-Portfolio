@@ -1,201 +1,274 @@
 """
-Task API — a small in-memory CRUD API built for FlyRank Internship
-Backend Track, Week 2, Assignment A1.
+Task API — FastAPI CRUD API with SQLite + SQLModel
+FlyRank Internship
+Backend Track — Week 3 A2
 
-Run with:
-    uvicorn main:app --reload
+Run:
+    uvicorn main:app --reload --port 8001
 
-Then visit:
-    http://localhost:8000/       -> API description
-    http://localhost:8000/docs   -> Swagger UI
+Docs:
+    http://127.0.0.1:8001/docs
 """
 
-from typing import List, Optional
+from typing import Optional
+
 from fastapi import FastAPI, Request, Response, status
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, field_validator
 from sqlmodel import Session, select
+
 from database import engine, create_db_and_tables
 from models import Task as DBTask
+
+
 app = FastAPI(
     title="Task API",
     version="1.0",
-    description="A minimal in-memory to-do list API (CRUD) built with FastAPI.",
+    description="A CRUD Task API built using FastAPI, SQLModel and SQLite.",
 )
+
+
+# --------------------------------------------------
+# Database startup
+# --------------------------------------------------
+
 @app.on_event("startup")
 def startup():
     create_db_and_tables()
 
     with Session(engine) as session:
-
         if session.exec(select(DBTask)).first() is None:
-
             session.add(DBTask(title="Buy milk", done=False))
             session.add(DBTask(title="Walk the dog", done=True))
             session.add(DBTask(title="Finish FlyRank assignment", done=False))
 
             session.commit()
 
-# ---------------------------------------------------------------------------
-# Make FastAPI's default validation errors match the spec:
-# { "error": "..." } with status 400, instead of FastAPI's default
-# { "detail": [...] } with status 422.
-# ---------------------------------------------------------------------------
+
+# --------------------------------------------------
+# Validation Error Handler
+# --------------------------------------------------
 
 @app.exception_handler(RequestValidationError)
-async def validation_exception_handler(request: Request, exc: RequestValidationError):
-    first = exc.errors()[0]
-    field = first["loc"][-1] if first.get("loc") else "body"
-    return JSONResponse(status_code=400, content={"error": f"Invalid value for '{field}'"})
+async def validation_exception_handler(
+    request: Request,
+    exc: RequestValidationError
+):
+    first_error = exc.errors()[0]
+    field = first_error["loc"][-1]
+
+    return JSONResponse(
+        status_code=400,
+        content={
+            "error": f"Invalid value for '{field}'"
+        }
+    )
 
 
-# ---------------------------------------------------------------------------
-# Data models
-# ---------------------------------------------------------------------------
-
-class Task(BaseModel):
-    id: int
-    title: str
-    done: bool = False
-
+# --------------------------------------------------
+# Request Models
+# --------------------------------------------------
 
 class TaskCreate(BaseModel):
-    """What the client sends when creating a task."""
     title: str
 
     @field_validator("title")
     @classmethod
-    def title_not_empty(cls, v: str) -> str:
-        if not v or not v.strip():
+    def title_not_empty(cls, value):
+        if not value.strip():
             raise ValueError("title must not be empty")
-        return v.strip()
+
+        return value.strip()
 
 
 class TaskUpdate(BaseModel):
-    """What the client sends when updating a task."""
+
     title: Optional[str] = None
     done: Optional[bool] = None
 
     @field_validator("title")
     @classmethod
-    def title_not_empty(cls, v):
-        if v is not None:
-            if not v.strip():
+    def title_not_empty(cls, value):
+
+        if value is not None:
+
+            if not value.strip():
                 raise ValueError("title must not be empty")
-            return v.strip()
-        return v
+
+            return value.strip()
+
+        return value
 
 
-# ---------------------------------------------------------------------------
-# In-memory "database"
-# ---------------------------------------------------------------------------
 
-def seed_tasks() -> List[dict]:
-    return [
-        {"id": 1, "title": "Buy milk", "done": False},
-        {"id": 2, "title": "Walk the dog", "done": True},
-        {"id": 3, "title": "Finish FlyRank assignment", "done": False},
-    ]
+# --------------------------------------------------
+# Root & Health
+# --------------------------------------------------
 
-
-tasks: List[dict] = seed_tasks()
-next_id: int = 4
-
-
-# ---------------------------------------------------------------------------
-# Stage 1 — root & health
-# ---------------------------------------------------------------------------
-
-@app.get("/", tags=["meta"], summary="API description")
+@app.get("/")
 def read_root():
-    return {"name": "Task API", "version": "1.0", "endpoints": ["/tasks"]}
+
+    return {
+        "name": "Task API",
+        "version": "1.0",
+        "database": "SQLite"
+    }
 
 
-@app.get("/health", tags=["meta"], summary="Health check")
+@app.get("/health")
 def health_check():
-    return {"status": "ok"}
+
+    return {
+        "status": "ok"
+    }
 
 
-# ---------------------------------------------------------------------------
-# Stage 2 — Read
-# ---------------------------------------------------------------------------
 
-@app.get("/tasks", tags=["tasks"], summary="List tasks (with optional filter/search)")
-def list_tasks(done: Optional[bool] = None, search: Optional[str] = None):
-    result = tasks
-    if done is not None:
-        result = [t for t in result if t["done"] == done]
-    if search:
-        result = [t for t in result if search.lower() in t["title"].lower()]
-    return result
+# --------------------------------------------------
+# CRUD Endpoints
+# --------------------------------------------------
+
+@app.get("/tasks")
+def list_tasks():
+
+    with Session(engine) as session:
+
+        tasks = session.exec(select(DBTask)).all()
+
+        return tasks
 
 
-@app.get("/tasks/{task_id}", tags=["tasks"], summary="Get one task")
+
+@app.get("/tasks/{task_id}")
 def get_task(task_id: int):
-    for t in tasks:
-        if t["id"] == task_id:
-            return t
-    return JSONResponse(status_code=404, content={"error": f"Task {task_id} not found"})
+
+    with Session(engine) as session:
+
+        task = session.get(DBTask, task_id)
+
+        if task is None:
+
+            return JSONResponse(
+                status_code=404,
+                content={
+                    "error": f"Task {task_id} not found"
+                }
+            )
+
+        return task
 
 
-# ---------------------------------------------------------------------------
-# Stage 3 — Create
-# ---------------------------------------------------------------------------
 
-@app.post("/tasks", status_code=status.HTTP_201_CREATED, tags=["tasks"], summary="Create a task")
-def create_task(new_task: TaskCreate):
-    global next_id
-    task = {"id": next_id, "title": new_task.title, "done": False}
-    tasks.append(task)
-    next_id += 1
-    return task
+@app.post(
+    "/tasks",
+    status_code=status.HTTP_201_CREATED
+)
+def create_task(task_data: TaskCreate):
 
+    with Session(engine) as session:
 
-# ---------------------------------------------------------------------------
-# Stage 4 — Update & Delete
-# ---------------------------------------------------------------------------
+        task = DBTask(
+            title=task_data.title,
+            done=False
+        )
 
-@app.put("/tasks/{task_id}", tags=["tasks"], summary="Update a task")
-def update_task(task_id: int, updates: TaskUpdate):
-    for t in tasks:
-        if t["id"] == task_id:
-            if updates.title is None and updates.done is None:
-                return JSONResponse(
-                    status_code=400,
-                    content={"error": "Provide at least one of: title, done"},
-                )
-            if updates.title is not None:
-                t["title"] = updates.title
-            if updates.done is not None:
-                t["done"] = updates.done
-            return t
-    return JSONResponse(status_code=404, content={"error": f"Task {task_id} not found"})
+        session.add(task)
+        session.commit()
+        session.refresh(task)
+
+        return task
 
 
-@app.delete("/tasks/{task_id}", tags=["tasks"], summary="Delete a task")
+
+@app.put("/tasks/{task_id}")
+def update_task(
+    task_id: int,
+    updates: TaskUpdate
+):
+
+    with Session(engine) as session:
+
+        task = session.get(DBTask, task_id)
+
+        if task is None:
+
+            return JSONResponse(
+                status_code=404,
+                content={
+                    "error": f"Task {task_id} not found"
+                }
+            )
+
+
+        if updates.title is None and updates.done is None:
+
+            return JSONResponse(
+                status_code=400,
+                content={
+                    "error": "Provide at least one of: title, done"
+                }
+            )
+
+
+        if updates.title is not None:
+            task.title = updates.title
+
+
+        if updates.done is not None:
+            task.done = updates.done
+
+
+        session.add(task)
+        session.commit()
+        session.refresh(task)
+
+        return task
+
+
+
+@app.delete("/tasks/{task_id}")
 def delete_task(task_id: int):
-    for t in tasks:
-        if t["id"] == task_id:
-            tasks.remove(t)
-            return Response(status_code=status.HTTP_204_NO_CONTENT)
-    return JSONResponse(status_code=404, content={"error": f"Task {task_id} not found"})
+
+    with Session(engine) as session:
+
+        task = session.get(DBTask, task_id)
+
+        if task is None:
+
+            return JSONResponse(
+                status_code=404,
+                content={
+                    "error": f"Task {task_id} not found"
+                }
+            )
 
 
-# ---------------------------------------------------------------------------
-# Extras (stretch goals)
-# ---------------------------------------------------------------------------
+        session.delete(task)
+        session.commit()
 
-@app.get("/stats", tags=["extras"], summary="Task stats")
+        return Response(
+            status_code=status.HTTP_204_NO_CONTENT
+        )
+
+
+
+# --------------------------------------------------
+# Extra Endpoint
+# --------------------------------------------------
+
+@app.get("/stats")
 def stats():
-    total = len(tasks)
-    done_count = sum(1 for t in tasks if t["done"])
-    return {"total": total, "done": done_count, "open": total - done_count}
 
+    with Session(engine) as session:
 
-@app.post("/reset", tags=["extras"], summary="Reset to the 3 seed tasks")
-def reset():
-    global tasks, next_id
-    tasks = seed_tasks()
-    next_id = 4
-    return {"status": "reset", "tasks": tasks}
+        tasks = session.exec(select(DBTask)).all()
+
+        total = len(tasks)
+        done = sum(task.done for task in tasks)
+
+        return {
+            "total": total,
+            "done": done,
+            "pending": total - done
+        }
