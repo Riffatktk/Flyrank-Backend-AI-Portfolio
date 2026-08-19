@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Header
 from pydantic import BaseModel
 
 from auth import supabase
@@ -15,6 +15,10 @@ class AuthRequest(BaseModel):
 def root():
     return {"message": "FlyRank A4 Auth API is running"}
 
+
+# =========================
+# Stage 1 — Signup
+# =========================
 
 @app.post("/auth/signup", status_code=201)
 def signup(data: AuthRequest):
@@ -41,6 +45,10 @@ def signup(data: AuthRequest):
         )
 
 
+# =========================
+# Stage 1 — Login
+# =========================
+
 @app.post("/auth/login")
 def login(data: AuthRequest):
     if not data.email or not data.password:
@@ -65,3 +73,41 @@ def login(data: AuthRequest):
             status_code=401,
             detail="Invalid login credentials"
         )
+
+
+# =========================
+# Stage 2 — Public Route
+# =========================
+
+@app.get("/public/info")
+def public_info():
+    return {
+        "message": "Welcome stranger! This info is public."
+    }
+
+
+# =========================
+# Stage 2 — Protected Route
+# =========================
+
+@app.get("/protected/profile")
+def protected_profile(
+    authorization: str | None = Header(default=None)
+):
+    if not authorization or not authorization.startswith("Bearer "):
+        raise HTTPException(
+            status_code=401,
+            detail="Access token required"
+        )
+
+    token = authorization.replace("Bearer ", "", 1).strip()
+
+    if not token:
+        raise HTTPException(
+            status_code=401,
+            detail="Access token required"
+        )
+
+    return {
+        "message": "Token received. Verification will be added in Stage 3."
+    }
