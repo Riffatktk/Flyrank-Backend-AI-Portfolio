@@ -1,7 +1,7 @@
-from fastapi import FastAPI, HTTPException, Header
+from fastapi import FastAPI, HTTPException, Depends
 from pydantic import BaseModel
 
-from auth import supabase
+from auth import supabase, get_current_user
 
 app = FastAPI(title="FlyRank A4 Auth API")
 
@@ -15,10 +15,6 @@ class AuthRequest(BaseModel):
 def root():
     return {"message": "FlyRank A4 Auth API is running"}
 
-
-# =========================
-# Stage 1 — Signup
-# =========================
 
 @app.post("/auth/signup", status_code=201)
 def signup(data: AuthRequest):
@@ -44,10 +40,6 @@ def signup(data: AuthRequest):
             detail=str(e)
         )
 
-
-# =========================
-# Stage 1 — Login
-# =========================
 
 @app.post("/auth/login")
 def login(data: AuthRequest):
@@ -75,10 +67,6 @@ def login(data: AuthRequest):
         )
 
 
-# =========================
-# Stage 2 — Public Route
-# =========================
-
 @app.get("/public/info")
 def public_info():
     return {
@@ -86,49 +74,32 @@ def public_info():
     }
 
 
-# =========================
-# Stage 2 — Protected Route
-# =========================
-
 @app.get("/protected/profile")
-def protected_profile(
-    authorization: str | None = Header(default=None)
-):
-    if not authorization or not authorization.startswith("Bearer "):
-        raise HTTPException(
-            status_code=401,
-            detail="Access token required"
-        )
+def profile(user=Depends(get_current_user)):
+    return {
+        "id": user.id,
+        "email": user.email,
+        "created_at": user.created_at
+    }
 
-    token = authorization.replace("Bearer ", "", 1).strip()
 
-    if not token:
-        raise HTTPException(
-            status_code=401,
-            detail="Access token required"
-        )
+@app.get("/protected/dashboard")
+def dashboard(user=Depends(get_current_user)):
+    return {
+        "message": "Welcome to your protected dashboard!",
+        "user_id": user.id,
+        "email": user.email
+    }
 
+
+@app.post("/auth/logout", status_code=204)
+def logout(user=Depends(get_current_user)):
     try:
-        response = supabase.auth.get_user(token)
-        user = response.user
-
-        if not user:
-            raise HTTPException(
-                status_code=401,
-                detail="Invalid or expired token"
-            )
-
-        return {
-            "id": user.id,
-            "email": user.email,
-            "created_at": user.created_at
-        }
-
-    except HTTPException:
-        raise
+        supabase.auth.sign_out()
+        return None
 
     except Exception:
         raise HTTPException(
             status_code=401,
-            detail="Invalid or expired token"
+            detail="Logout failed"
         )
