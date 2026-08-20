@@ -108,6 +108,27 @@ def protected_profile(
             detail="Access token required"
         )
 
-    return {
-        "message": "Token received. Verification will be added in Stage 3."
-    }
+    try:
+        response = supabase.auth.get_user(token)
+        user = response.user
+
+        if not user:
+            raise HTTPException(
+                status_code=401,
+                detail="Invalid or expired token"
+            )
+
+        return {
+            "id": user.id,
+            "email": user.email,
+            "created_at": user.created_at
+        }
+
+    except HTTPException:
+        raise
+
+    except Exception:
+        raise HTTPException(
+            status_code=401,
+            detail="Invalid or expired token"
+        )
