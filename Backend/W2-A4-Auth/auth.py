@@ -1,7 +1,8 @@
 import os
 
 from dotenv import load_dotenv
-from fastapi import HTTPException, Header
+from fastapi import HTTPException, Depends
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 
 from supabase import create_client
 
@@ -12,21 +13,13 @@ SUPABASE_KEY = os.getenv("SUPABASE_KEY")
 
 supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
 
+security = HTTPBearer()
 
-def get_current_user(authorization: str = Header(None)):
-    if not authorization or not authorization.startswith("Bearer "):
-        raise HTTPException(
-            status_code=401,
-            detail="Access token required"
-        )
 
-    token = authorization.replace("Bearer ", "", 1).strip()
-
-    if not token:
-        raise HTTPException(
-            status_code=401,
-            detail="Access token required"
-        )
+def get_current_user(
+    credentials: HTTPAuthorizationCredentials = Depends(security)
+):
+    token = credentials.credentials
 
     try:
         response = supabase.auth.get_user(token)

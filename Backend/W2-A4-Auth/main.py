@@ -97,7 +97,6 @@ def logout(user=Depends(get_current_user)):
     try:
         supabase.auth.sign_out()
         return None
-
     except Exception:
         raise HTTPException(
             status_code=401,
