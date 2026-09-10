@@ -35,7 +35,7 @@ const CASES = [
       "PLACEHOLDER — fill this in once the PR is reviewed: what shipped, " +
       "what the reviewer said, what you'd do differently next time.",
     links: {
-      repo: "https://github.com/YOUR-FORK/ninja-grid-backend",
+      repo: "https://github.com/Riffatktk/ninja-grid-backend",
       writeup: ""
     }
   },
