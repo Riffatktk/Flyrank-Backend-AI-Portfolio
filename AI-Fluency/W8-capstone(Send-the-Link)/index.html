@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Riffat — Backend Engineer</title>
+<meta name="description" content="Backend Engineer who writes security-conscious code. FastAPI, PostgreSQL, Docker, async jobs — real shipped work, not slides." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0d0a;
+    --panel: #10140f;
+    --border: #1f2b1a;
+    --text: #d7e6d0;
+    --muted: #6c7a68;
+    --accent: #ffb703;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'JetBrains Mono', ui-monospace, Consolas, monospace;
+    line-height: 1.6;
+  }
+
+  a { color: inherit; }
+
+  .wrap {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  /* ---------- nav ---------- */
+  nav.top {
+    border-bottom: 1px solid var(--border);
+    padding: 18px 0;
+  }
+  nav.top .wrap {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+  }
+  nav.top .links a {
+    text-decoration: none;
+    margin-left: 20px;
+    color: var(--muted);
+  }
+  nav.top .links a:hover { color: var(--accent); }
+
+  /* ---------- hero ---------- */
+  .hero {
+    padding: 90px 0 70px;
+  }
+  .hero .prompt {
+    color: var(--accent);
+    font-size: 13px;
+    margin: 0 0 14px;
+  }
+  .hero h1 {
+    font-size: 30px;
+    line-height: 1.35;
+    margin: 0 0 18px;
+    font-weight: 600;
+  }
+  .hero p.lead {
+    color: var(--muted);
+    font-size: 14.5px;
+    max-width: 52ch;
+    margin: 0 0 28px;
+  }
+  .hero .cta a {
+    display: inline-block;
+    border: 1px solid var(--border);
+    padding: 8px 16px;
+    text-decoration: none;
+    font-size: 13px;
+    margin-right: 10px;
+  }
+  .hero .cta a:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ---------- section shell ---------- */
+  section { padding: 60px 0; border-top: 1px solid var(--border); }
+  section .prompt { color: var(--accent); font-size: 13px; margin: 0 0 6px; }
+  section h2 { font-size: 20px; margin: 0 0 8px; font-weight: 600; }
+  section .sub { color: var(--muted); font-size: 13px; margin: 0 0 30px; }
+
+  /* ---------- stack ---------- */
+  .stack-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px;
+  }
+  .stack-item {
+    border: 1px solid var(--border);
+    padding: 14px 16px;
+    font-size: 13px;
+  }
+  .stack-item .k { color: var(--accent); display: block; font-size: 11px; margin-bottom: 4px; }
+
+  /* ---------- footer ---------- */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 40px 0 60px;
+    font-size: 12.5px;
+    color: var(--muted);
+  }
+  footer .row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .badge-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--text);
+    text-decoration: none;
+    border: 1px solid var(--border);
+    padding: 6px 12px;
+  }
+  .badge-link:hover { border-color: var(--accent); }
+  .badge-link img { height: 16px; }
+
+  /* ---------- case studies (imported styles) ---------- */
+  .cs-section { padding: 60px 0; border-top: 1px solid var(--border); }
+  .cs-inner { max-width: 720px; margin: 0 auto; padding: 0 20px; }
+  .cs-prompt { color: var(--accent); font-size: 13px; margin: 0 0 6px; }
+  .cs-heading { font-size: 20px; font-weight: 600; margin: 0 0 8px; }
+  .cs-sub { color: var(--muted); font-size: 13px; margin: 0 0 30px; line-height: 1.6; }
+  .cs-list { display: flex; flex-direction: column; gap: 18px; }
+  .cs-card { border: 1px solid var(--border); background: var(--panel); padding: 20px 22px; }
+  .cs-card-top { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; margin-bottom: 10px; }
+  .cs-id { color: var(--accent); font-size: 12px; }
+  .cs-date { color: var(--muted); font-size: 12px; }
+  .cs-title { font-size: 16px; font-weight: 600; margin: 4px 0 12px; line-height: 1.4; }
+  .cs-stack { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
+  .cs-tag { font-size: 11px; color: var(--muted); border: 1px solid var(--border); padding: 2px 8px; }
+  .cs-beat { font-size: 13.5px; line-height: 1.65; margin: 0 0 10px; }
+  .cs-beat:last-of-type { margin-bottom: 16px; }
+  .cs-beat-label { color: var(--accent); margin-right: 6px; }
+  .cs-links a { text-decoration: none; border-bottom: 1px solid var(--border); font-size: 12.5px; margin-right: 16px; }
+  .cs-links a:hover { border-bottom-color: var(--accent); }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .cs-card, .hero .cta a, .stack-item { transition: border-color 0.15s ease, color 0.15s ease; }
+  }
+
+  @media (max-width: 480px) {
+    .hero h1 { font-size: 24px; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="top">
+  <div class="wrap">
+    <span>riffat<span style="color:var(--accent)">@</span>backend</span>
+    <span class="links">
+      <a href="#stack">stack</a>
+      <a href="#case-studies">work</a>
+      <a href="https://github.com/Riffatktk" target="_blank" rel="noopener">github</a>
+    </span>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <p class="prompt">$ whoami</p>
+    <h1>Backend Engineer who writes<br>security-conscious code.</h1>
+    <p class="lead">
+      BSCS student building real backend systems — APIs, async jobs, and
+      data models that hold up under review, not just in a demo.
+    </p>
+    <div class="cta">
+      <a href="#case-studies">see the work</a>
+      <a href="https://github.com/Riffatktk" target="_blank" rel="noopener">github ↗</a>
+    </div>
+  </div>
+</header>
+
+<section id="stack">
+  <div class="wrap">
+    <p class="prompt">$ cat stack.txt</p>
+    <h2>stack</h2>
+    <p class="sub">what I build with, day to day.</p>
+    <div class="stack-grid">
+      <div class="stack-item"><span class="k">api</span>FastAPI</div>
+      <div class="stack-item"><span class="k">db</span>PostgreSQL</div>
+      <div class="stack-item"><span class="k">infra</span>Docker</div>
+      <div class="stack-item"><span class="k">jobs</span>Celery + Redis</div>
+      <div class="stack-item"><span class="k">cloud</span>AWS (Cloud Practitioner)</div>
+      <div class="stack-item"><span class="k">lang</span>Python, C++</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== case studies (from case-studies/) ===== -->
+<section id="case-studies" class="cs-section">
+  <div class="cs-inner">
+    <p class="cs-prompt">$ ls ./case-studies</p>
+    <h2 class="cs-heading">case studies</h2>
+    <p class="cs-sub">n keeps counting. every shipped piece is indexed below, newest first.</p>
+    <div id="cs-list" class="cs-list"></div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap row">
+    <span>Built with FastAPI, Docker, and an honest amount of debugging.</span>
+    <a class="badge-link" href="https://internship.flyrank.ai/verify?id=FR-D1-46B90-E4EC9" target="_blank" rel="noopener">
+      <img src="https://aifluency.flyrank.ai/badge/graduate.svg" alt="FlyRank AI Fluency Intern — Verified" />
+      FlyRank AI Fluency Intern — Verify (FR-D1-46B90-E4EC9)
+    </a>
+  </div>
+</footer>
+
+<script src="case-studies/cases.js"></script>
+<script src="case-studies/case-studies.js"></script>
+</body>
+</html>
