@@ -219,3 +219,13 @@ therefore used SQLite (`DATABASE_URL=sqlite:///./widget_platform.db`), which
 the capstone brief's own free-stack table lists as an acceptable starting
 option. The `docker-compose.yml` / Postgres path is unchanged and is exactly
 what the free-tools table describes for a standard machine.
+
+## Test suite (stretch goal)
+pytest -v
+tests/test_widgets_and_submissions.py::test_create_widget_requires_auth PASSED
+tests/test_widgets_and_submissions.py::test_full_widget_and_submission_flow PASSED
+tests/test_widgets_and_submissions.py::test_honeypot_rejects_bot_submission PASSED
+tests/test_widgets_and_submissions.py::test_oversized_payload_rejected PASSED
+tests/test_widgets_and_submissions.py::test_rate_limit_returns_429_then_recovers PASSED
+
+5 passed, 19 warnings in 0.29s
