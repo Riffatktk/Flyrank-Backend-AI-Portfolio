@@ -1,0 +1,38 @@
+name: embeddable-widget-lead-capture-platform
+track: flyrank-backend
+run: docker compose up
+seed: docker compose exec api python seed.py
+test: pytest
+base_url: http://localhost:8000
+
+endpoints:
+  - method: POST
+    path: /widgets
+    auth: X-API-Key header
+  - method: GET
+    path: /widgets
+    auth: X-API-Key header
+  - method: GET
+    path: /widgets/{id}
+    auth: X-API-Key header
+  - method: PUT
+    path: /widgets/{id}
+    auth: X-API-Key header
+  - method: DELETE
+    path: /widgets/{id}
+    auth: X-API-Key header
+  - method: GET
+    path: /widgets/{id}/config
+    auth: none (public, cached, CORS)
+  - method: GET
+    path: /widget.js
+    auth: none (public, long-cache, versioned)
+  - method: POST
+    path: /widgets/{id}/submissions
+    auth: none (public, CORS, rate-limited, spam-checked)
+  - method: GET
+    path: /dashboard/widgets/{id}/submissions
+    auth: X-API-Key header
+  - method: GET
+    path: /dashboard/widgets/{id}/stats
+    auth: X-API-Key header
